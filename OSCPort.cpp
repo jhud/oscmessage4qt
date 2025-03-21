@@ -53,7 +53,7 @@ void OSCPort::run()
 
         if(!iSocket->waitForReadyRead()) {
             qDebug() << "Error with waitForReadyRead.";
-            sleep(1);
+            QThread::sleep(1);
             continue;
         }
 
