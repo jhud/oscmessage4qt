@@ -7,8 +7,8 @@
 #define OSCPACKET_H
 
 #include "OSCMsgToByteArrayConverter.h"
-#include <QVariant.h>
-#include <QVector.h>
+#include <QVariant>
+#include <QVector>
 
 
 class OSCPacket

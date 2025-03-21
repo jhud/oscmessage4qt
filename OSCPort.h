@@ -6,8 +6,8 @@
 #ifndef OSCPORT_H
 #define OSCPORT_H
 
-#include <QThread.h>
-#include <QUdpSocket.h>
+#include <QThread>
+#include <QUdpSocket>
 #include "OSCPacketDispatcher.h"
 #include "OSCByteArrayToMsgConverter.h"
 #include "OSCms_global.h"

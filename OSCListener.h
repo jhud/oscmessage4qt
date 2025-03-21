@@ -6,14 +6,16 @@
 #ifndef OSCLISTENER_H
 #define OSCLISTENER_H
 
-#include <QDateTime.h>
+#include <QHostAddress>
+
+//#include <QDateTime.h>
 class OSCMessage;
 
 class OSCListener
 {
 public:
 
-    virtual void acceptMessage(QDateTime& time, OSCMessage* message) = 0;
+    virtual void acceptMessage(class QDateTime& time, OSCMessage* message, QHostAddress & from) = 0;
 
 };
 

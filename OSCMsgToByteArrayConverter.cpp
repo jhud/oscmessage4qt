@@ -5,6 +5,22 @@
 
 #include "OSCMsgToByteArrayConverter.h"
 
+template<typename T>
+static inline T BigEndian(const T& x)
+{
+    const int one = 1;
+    const char sig = *(char*)&one;
+    if (sig == 0) return x; // for big endian machine just return the input
+    T ret;
+    int size = sizeof(T);
+    char* src = (char*)&x + sizeof(T) - 1;
+    char* dst = (char*)&ret;
+    while (size-- > 0){
+        *dst++ = *src--;
+    }
+    return ret;
+}
+
 OSCMsgToByteArrayConverter::OSCMsgToByteArrayConverter(QByteArray& byteArray)
     : iByteArray(byteArray)
 {
@@ -207,12 +223,35 @@ void OSCMsgToByteArrayConverter::write(QVariant& anObject)
         write(tdat);
         return;
     }
+    if(objType==QVariant::ByteArray)
+    {
+        QByteArray tdat(anObject.toByteArray());
+        write(qint32(tdat.length()));
+        writeBlob(tdat);
+        return;
+    }
     if((QMetaType::Type)objType==QMetaType::Float)
     {
         float tdat(anObject.toFloat());
         write(tdat);
         return;
     }
+}
+
+
+/**
+ * Write a string into the byte stream.
+ * @param aString java.lang.String
+ */
+void OSCMsgToByteArrayConverter::writeBlob(QByteArray& strArray)
+{
+    int mod = strArray.length() % 4;
+    int pad = 4 - mod;
+    for(int i = 0; i < pad; i++)
+    {
+        strArray.append('\0');
+    }
+    iByteArray.append(strArray);
 }
 
 /**
@@ -263,6 +302,10 @@ void OSCMsgToByteArrayConverter::writeType(QVariant& anObject)
     if(objType==QVariant::Char)
     {
         iByteArray.append('c');
+        return;
+    }
+    if(objType==QVariant::ByteArray) {
+        iByteArray.append('b');
         return;
     }
 }

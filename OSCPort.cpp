@@ -5,6 +5,8 @@
 
 #include "OSCPort.h"
 
+#include <stdio.h>
+
 /**
  * Create an OSCPort that sends to newAddress, newPort
  * @param newAddress InetAddress
@@ -60,11 +62,12 @@ void OSCPort::run()
         if(!iSocket->hasPendingDatagrams()) continue;
 
         qint32 mbytesLength;
-        mbytesLength = iSocket->readDatagram(datagram.data(),1536);
+        QHostAddress senderAddress;
+        mbytesLength = iSocket->readDatagram(datagram.data(),1536, &senderAddress);
         if(mbytesLength != -1)
         {
             OSCPacket * oscPacket = iConverter->convert(&datagram,mbytesLength);
-            iDispatcher->dispatchPacket(oscPacket);
+            iDispatcher->dispatchPacket(oscPacket, 0, senderAddress);
             delete oscPacket;
         }
     }
@@ -106,7 +109,7 @@ void OSCPort::addListener(QString& anAddress, OSCListener* listener)
 void OSCPort::send(OSCPacket& aPacket)
 {
     QByteArray& byteArray = aPacket.getByteArray();
-    qDebug() << "Writing OSC packet:" << byteArray.toPercentEncoding() << " to " << iAddress.toString() << " port" << iPort;
+    //qDebug() << "Writing OSC packet:" << byteArray.toPercentEncoding() << " to " << iAddress.toString() << " port" << iPort;
     iSocket->writeDatagram(byteArray, iAddress, iPort);
 }
 
@@ -117,11 +120,12 @@ void OSCPort::onReadyRead()
         if(!iSocket->hasPendingDatagrams()) return;
 
         qint32 mbytesLength;
-        mbytesLength = iSocket->readDatagram(datagram.data(),1536);
+        QHostAddress senderAddress;
+        mbytesLength = iSocket->readDatagram(datagram.data(),1536, &senderAddress);
         if(mbytesLength != -1)
         {
             OSCPacket * oscPacket = iConverter->convert(&datagram,mbytesLength);
-            iDispatcher->dispatchPacket(oscPacket);
+            iDispatcher->dispatchPacket(oscPacket, 0, senderAddress);
             delete oscPacket;
         }
 }

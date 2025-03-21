@@ -6,8 +6,8 @@
 #ifndef OSCJTOBAC_H
 #define OSCJTOBAC_H
 
-#include <QVariant.h>
-#include <QVector.h>
+#include <QVariant>
+#include <QVector>
 
 class OSCMsgToByteArrayConverter
 {
@@ -23,6 +23,7 @@ public:
     void write(float& fa);
     void write(qint64& la);
     void write(QString& aString);
+    void writeBlob(QByteArray& strArray);
     void write(char c);
     void write(QVariant& anObject);
     void writeType(QVariant& anObject);

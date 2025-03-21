@@ -11,6 +11,8 @@
 #include"OSCMessage.h"
 //#include <QHash>
 
+#include <QHostAddress>
+
 class OSCPacketDispatcher
 {
 public:
@@ -18,12 +20,12 @@ public:
     ~OSCPacketDispatcher();
 
     void addListener(QString& address, OSCListener *listener);
-    void dispatchPacket(OSCPacket *packet, QDateTime* timestamp = NULL);
+    void dispatchPacket(OSCPacket *packet, QDateTime* timestamp, QHostAddress &from);
 
 private:
-    void dispatchBundle(OSCBundle *bundle);
-    void dispatchMessage(OSCMessage* message);
-    void dispatchMessage(OSCMessage* message, QDateTime& time);
+    void dispatchBundle(OSCBundle *bundle, QHostAddress &from);
+    void dispatchMessage(OSCMessage* message, QHostAddress &from);
+    void dispatchMessage(OSCMessage* message, QDateTime& time, QHostAddress &from);
 
     QHash<QString,OSCListener*>* iAddressToClassTable;
 

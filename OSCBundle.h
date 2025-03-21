@@ -6,7 +6,7 @@
 #ifndef OSCBUNDLE_H
 #define OSCBUNDLE_H
 
-#include <QDateTime.h>
+#include <QDateTime>
 #include "OSCPacket.h"
 #include "OSCms_global.h"
 

@@ -96,7 +96,7 @@ QString OSCByteArrayToMsgConverter::readString()
     {
         stringChars.append(iBytes->at(iStreamPosition++));
     }
-    qDebug("readString:%s",QString(stringChars).toLatin1().constData());
+    //qDebug("readString:%s",QString(stringChars).toLatin1().constData());
     moveToFourByteBoundry();
     return QString(stringChars);
 }
@@ -120,7 +120,7 @@ QByteArray OSCByteArrayToMsgConverter::readTypes()
     {
         typesChars.append(iBytes->at(iStreamPosition++));
     }
-    qDebug("readTypes:%s",QString(typesChars).toLatin1().constData());
+    //qDebug("readTypes:%s",QString(typesChars).toLatin1().constData());
     return typesChars;
 }
 
@@ -184,7 +184,7 @@ QVariant OSCByteArrayToMsgConverter::readFloat()
 
     float * floatCast = (float*)&floatBytes;
 
-    qDebug("readFloat:%f",*floatCast);
+    //qDebug("readFloat:%f",*floatCast);
     return QVariant(*floatCast);
 }
 
@@ -218,7 +218,7 @@ QVariant OSCByteArrayToMsgConverter::readInteger()
     intBytes = (intBytes<<8)| iBytes->at(iStreamPosition++);
     intBytes = (intBytes<<8)| iBytes->at(iStreamPosition++);
     intBytes = (intBytes<<8)| iBytes->at(iStreamPosition++);
-    qDebug("readInteger:%d",intBytes);
+    //qDebug("readInteger:%d",intBytes);
     return QVariant(intBytes);
 }
 
